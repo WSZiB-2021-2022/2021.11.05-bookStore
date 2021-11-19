@@ -11,6 +11,9 @@
 <div id="menu">
     <a href="/main">Main</a>
     <a href="/contact">Kontakt</a>
+    <a th:if="${logged == true}" href="/cart">Koszyk</a>
+    <a th:if="${logged == false}" href="/login">Zaloguj</a>
+    <a th:if="${logged == true}" href="/logout">Wyloguj</a>
 </div>
 
 <div id="content">

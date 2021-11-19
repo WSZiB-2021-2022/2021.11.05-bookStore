@@ -17,7 +17,12 @@
 </div>
 
 <div id="content">
-    Jakiś adres, witamy !!
+    <div th:each="position : ${cart}" class="book">
+        <div th:text="${position.title}" class="title"></div>
+        <div th:text="${position.author}" class="author"></div>
+        <div th:text="'Sztuk: ' + ${position.quantity}" class="quantity"></div>
+        <div th:text="'Cena: ' + ${position.price}" class="price"></div>
+    </div>
 </div>
 </body>
 </html>

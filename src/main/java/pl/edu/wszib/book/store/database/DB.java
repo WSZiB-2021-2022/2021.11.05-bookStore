@@ -22,18 +22,21 @@ public class DB {
                                 "specjalistów IT i nie tylko",
                         "Beata Błaszczyk",
                         12.90,
-                        "978-83-283-3409-0"));
+                        "978-83-283-3409-0",
+                        10));
 
         this.books.add(new Book(2,
                 "Czysty kod. Podręcznik dobrego programisty",
                 "Robert C. Martin",
                 55.20,
-                "978-83-283-0234-1"));
+                "978-83-283-0234-1",
+                10));
 
         this.books.add(new Book(3,
                 "Algorytmy. Ilustrowany przewodnik",
                 "Aditya Bhargava",
-                43.91, "978-83-283-3445-8"));
+                43.91, "978-83-283-3445-8",
+                15));
 
         this.users.add(new User("admin", DigestUtils.md5Hex("admin")));
         this.users.add(new User("user", DigestUtils.md5Hex("user")));
@@ -47,6 +50,16 @@ public class DB {
         for(User user : this.users) {
             if(user.getLogin().equals(login)) {
                 return Optional.of(user);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    public Optional<Book> getBookById(int bookId) {
+        for(Book book : this.books) {
+            if(book.getId() == bookId) {
+                return Optional.of(book);
             }
         }
 

@@ -29,16 +29,14 @@ public class CommonController {
 
     @RequestMapping(value = "/main", method = RequestMethod.GET)
     public String main(Model model) {
-        List<Book> books = new ArrayList<>();
-        if(this.sessionObject.isLogged()) {
-            books = this.database.getBooks();
-        }
-        model.addAttribute("books", books);
+        model.addAttribute("books", this.database.getBooks());
+        model.addAttribute("logged", this.sessionObject.isLogged());
         return "main";
     }
 
     @RequestMapping(value = "/contact", method = RequestMethod.GET)
-    public String contact() {
+    public String contact(Model model) {
+        model.addAttribute("logged", this.sessionObject.isLogged());
         return "contact";
     }
 }

@@ -11,14 +11,19 @@
 <div id="menu">
     <a href="/main">Main</a>
     <a href="/contact">Kontakt</a>
+    <a th:if="${logged == true}" href="/cart">Koszyk</a>
+    <a th:if="${logged == false}" href="/login">Zaloguj</a>
+    <a th:if="${logged == true}" href="/logout">Wyloguj</a>
 </div>
 
 <div id="content">
     <div th:each="book : ${books}" class="book">
-        <div th:text="${book.title}"></div>
-        <div th:text="${book.author}"></div>
-        <div th:text="${book.price}"></div>
-        <div th:text="${book.isbn}"></div>
+        <div th:text="${book.title}" class="title"></div>
+        <div th:text="${book.author}" class="author"></div>
+        <div th:text="'Cena: ' + ${book.price}" class="price"></div>
+        <div th:text="'ISBN: ' + ${book.isbn}" class="isbn"></div>
+        <div th:text="'Sztuk: ' + ${book.quantity}" class="quantity"></div>
+        <a th:if="${logged == true}" th:href="@{/cart/add/{id}(id=${book.id})}">Do koszyka</a>
     </div>
 </div>
 </body>

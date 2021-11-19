@@ -8,13 +8,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.edu.wszib.book.store.database.DB;
 import pl.edu.wszib.book.store.exceptions.AuthValidationException;
 import pl.edu.wszib.book.store.service.AuthenticateService;
+import pl.edu.wszib.book.store.session.SessionObject;
 import pl.edu.wszib.book.store.validators.LoginValidator;
+
+import javax.annotation.Resource;
 
 @Controller
 public class AuthenticationController {
 
     @Autowired
     AuthenticateService authenticateService;
+
+    @Resource
+    SessionObject sessionObject;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginForm() {
@@ -30,10 +36,18 @@ public class AuthenticationController {
             return "redirect:/login";
         }
 
-        if(this.authenticateService.authenticate(login, password)) {
+        this.authenticateService.authenticate(login, password);
+
+        if(this.sessionObject.isLogged()) {
             return "redirect:/main";
         } else {
             return "redirect:/login";
         }
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout() {
+        this.sessionObject.setUser(null);
+        return "redirect:/main";
     }
 }
