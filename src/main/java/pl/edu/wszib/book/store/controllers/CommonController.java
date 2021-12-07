@@ -5,19 +5,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import pl.edu.wszib.book.store.database.DB;
-import pl.edu.wszib.book.store.model.Book;
+import pl.edu.wszib.book.store.service.IBookService;
+import pl.edu.wszib.book.store.service.impl.BookService;
 import pl.edu.wszib.book.store.session.SessionObject;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class CommonController {
 
     @Autowired
-    DB database;
+    IBookService bookService;
 
     @Resource
     SessionObject sessionObject;
@@ -29,7 +27,7 @@ public class CommonController {
 
     @RequestMapping(value = "/main", method = RequestMethod.GET)
     public String main(Model model) {
-        model.addAttribute("books", this.database.getBooks());
+        model.addAttribute("books", this.bookService.getAllBooks());
         model.addAttribute("logged", this.sessionObject.isLogged());
         return "main";
     }

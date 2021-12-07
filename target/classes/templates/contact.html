@@ -3,18 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Jarir Bokstore</title>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="common.css">
 </head>
 <body>
-<div id="logo"><img src="logo.png"></div>
-
-<div id="menu">
-    <a href="/main">Main</a>
-    <a href="/contact">Kontakt</a>
-    <a th:if="${logged == true}" href="/cart">Koszyk</a>
-    <a th:if="${logged == false}" href="/login">Zaloguj</a>
-    <a th:if="${logged == true}" href="/logout">Wyloguj</a>
-</div>
+<div th:replace="fragments.html :: logo"></div>
+<div th:replace="fragments.html :: menu"></div>
 
 <div id="content">
     Jakiś adres, witamy !!

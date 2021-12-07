@@ -1,14 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Jarir Bokstore</title>
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
-<form method="post">
-    <input type="text" placeholder="Login" name="login">
-    <input type="password" placeholder="Haslo" name="password">
-    <input type="submit" value="Login">
-</form>
+
+<div th:replace="fragments.html :: logo"></div>
+<div th:replace="fragments.html :: menu"></div>
+
+<div id="content">
+    <form method="post" id="login-form">
+        <input type="text" placeholder="Login" name="login">
+        <br>
+        <input type="password" placeholder="Haslo" name="password">
+        <br>
+        <input type="submit" value="Login">
+    </form>
+    <a href="/register">Zarejestruj</a>
+</div>
 </body>
 </html>

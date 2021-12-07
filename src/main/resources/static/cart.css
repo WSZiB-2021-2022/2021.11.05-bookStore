@@ -1,0 +1,30 @@
+.order-position {
+    width: 75%;
+    border: 1px solid black;
+    margin: 2px 0;
+}
+
+.order-position .title {
+    width: 55%;
+    display: inline-block;
+}
+
+.order-position .author {
+    width: 15%;
+    display: inline-block;
+}
+
+.order-position .quantity {
+    width: 9%;
+    display: inline-block;
+}
+
+.order-position .piece-price {
+    width: 9%;
+    display: inline-block;
+}
+
+.order-position .price {
+    width: 9%;
+    display: inline-block;
+}

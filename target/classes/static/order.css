@@ -1,0 +1,49 @@
+.order {
+    width: 75%;
+    border: 1px solid black;
+    margin: 2px 0;
+}
+
+.order:hover > .order-position {
+    display: block;
+}
+
+.order .date {
+    width: 30%;
+    display: inline-block;
+}
+
+.order .status {
+    width: 15%;
+    display: inline-block;
+}
+
+.order .price {
+    width: 15%;
+    display: inline-block;
+}
+
+.order .order-position {
+    display: none;
+}
+
+.order-position {
+    width: 75%;
+    border: 1px solid black;
+    margin: 2px 0;
+}
+
+.order-position .title {
+    width: 50%;
+    display: inline-block;
+}
+
+.order-position .author {
+    width: 30%;
+    display: inline-block;
+}
+
+.order-position .quantity {
+    width: 17%;
+    display: inline-block;
+}

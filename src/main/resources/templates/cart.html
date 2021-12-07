@@ -3,28 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Jarir Bokstore</title>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="cart.css">
 </head>
 <body>
-<div id="logo"><img src="logo.png"></div>
-
-<div id="menu">
-    <a href="/main">Main</a>
-    <a href="/contact">Kontakt</a>
-    <a th:if="${logged == true}" href="/cart">Koszyk</a>
-    <a th:if="${logged == false}" href="/login">Zaloguj</a>
-    <a th:if="${logged == true}" href="/logout">Wyloguj</a>
-</div>
+<div th:replace="fragments.html :: logo"></div>
+<div th:replace="fragments.html :: menu"></div>
 
 <div id="content">
-    <div th:each="position : ${cart}" class="book">
-        <div th:text="${position.title}" class="title"></div>
-        <div th:text="${position.author}" class="author"></div>
-        <div th:text="'Sztuk: ' + ${position.quantity}" class="quantity"></div>
-        <div th:text="'Cena: ' + ${position.price}" class="price"></div>
+    <div class="order-position">
+        <div class="title">Tytuł</div>
+        <div class="author">Autor</div>
+        <div class="quantity">Ilość</div>
+        <div class="piece-price">Cena j.</div>
+        <div class="price">Cena</div>
     </div>
-
-    <div>Suma: </div>
+    <div th:each="position : ${cart.orderPositions}" class="order-position">
+        <div th:text="${position.book.title}" class="title"></div>
+        <div th:text="${position.book.author}" class="author"></div>
+        <div th:text="${position.quantity}" class="quantity"></div>
+        <div th:text="${position.book.price + 'zł'}" class="piece-price"></div>
+        <div th:text="${position.book.price * position.quantity + 'zł'}" class="price"></div>
+    </div>
+    <div class="order-position">
+        <div class="title"></div>
+        <div class="author"></div>
+        <div class="quantity"></div>
+        <div class="piece-price">Suma</div>
+        <div th:text="${sum + 'zł'}" class="price"></div>
+    </div>
+    <a href="/order">Zamów</a>
 </div>
 </body>
 </html>

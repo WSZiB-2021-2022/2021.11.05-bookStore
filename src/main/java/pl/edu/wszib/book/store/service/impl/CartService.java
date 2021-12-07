@@ -1,20 +1,18 @@
-package pl.edu.wszib.book.store.service;
+package pl.edu.wszib.book.store.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.wszib.book.store.database.DB;
 import pl.edu.wszib.book.store.model.Book;
 import pl.edu.wszib.book.store.model.OrderPosition;
-import pl.edu.wszib.book.store.model.view.BookOrderPosition;
+import pl.edu.wszib.book.store.service.ICartService;
 import pl.edu.wszib.book.store.session.SessionObject;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CartService {
+public class CartService implements ICartService {
 
     @Autowired
     DB database;

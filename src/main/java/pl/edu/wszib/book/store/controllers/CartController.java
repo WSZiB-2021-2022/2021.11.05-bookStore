@@ -6,23 +6,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import pl.edu.wszib.book.store.model.Book;
-import pl.edu.wszib.book.store.model.OrderPosition;
-import pl.edu.wszib.book.store.model.view.BookOrderPosition;
-import pl.edu.wszib.book.store.service.CartService;
+import pl.edu.wszib.book.store.service.ICartService;
+import pl.edu.wszib.book.store.service.impl.CartService;
 import pl.edu.wszib.book.store.session.SessionObject;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "/cart")
 public class CartController {
 
     @Autowired
-    CartService cartService;
+    ICartService cartService;
 
     @Resource
     SessionObject sessionObject;
@@ -37,6 +32,8 @@ public class CartController {
     public String cart(Model model) {
         model.addAttribute("cart",
                 this.sessionObject.getCart());
+        model.addAttribute("sum", this.sessionObject.getCart().getSum());
+        model.addAttribute("logged", this.sessionObject.isLogged());
 
         return "cart";
     }
