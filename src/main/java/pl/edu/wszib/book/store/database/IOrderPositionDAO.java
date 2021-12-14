@@ -1,0 +1,7 @@
+package pl.edu.wszib.book.store.database;
+
+import pl.edu.wszib.book.store.model.OrderPosition;
+
+public interface IOrderPositionDAO {
+    void addOrderPosition(OrderPosition orderPosition, int orderId);
+}

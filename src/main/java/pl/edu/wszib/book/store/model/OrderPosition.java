@@ -1,6 +1,7 @@
 package pl.edu.wszib.book.store.model;
 
 public class OrderPosition {
+    //TODO ID field
     private Book book;
     private int quantity;
 
