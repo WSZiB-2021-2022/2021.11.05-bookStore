@@ -53,6 +53,7 @@ public class BookDAOImpl implements IBookDAO {
             String sql = "SELECT * FROM tbook WHERE id = ?";
 
             PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
+            preparedStatement.setInt(1, bookId);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -72,5 +73,24 @@ public class BookDAOImpl implements IBookDAO {
         }
 
         return Optional.empty();
+    }
+
+    @Override
+    public void updateBook(Book book) {
+        try {
+            String sql = "UPDATE tbook SET title = ?, author = ?, price = ?, isbn  = ?, quantity = ? WHERE id = ?";
+
+            PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
+            preparedStatement.setString(1, book.getTitle());
+            preparedStatement.setString(2, book.getAuthor());
+            preparedStatement.setDouble(3, book.getPrice());
+            preparedStatement.setString(4, book.getIsbn());
+            preparedStatement.setInt(5, book.getQuantity());
+            preparedStatement.setInt(6, book.getId());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }

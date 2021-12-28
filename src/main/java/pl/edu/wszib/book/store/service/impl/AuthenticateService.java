@@ -4,6 +4,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.wszib.book.store.database.DB;
+import pl.edu.wszib.book.store.database.IUserDAO;
 import pl.edu.wszib.book.store.exceptions.LoginAlreadyUseException;
 import pl.edu.wszib.book.store.model.User;
 import pl.edu.wszib.book.store.model.view.RegisterUser;
@@ -17,14 +18,14 @@ import java.util.Optional;
 public class AuthenticateService implements IAuthenticationService {
 
     @Autowired
-    DB database;
+    IUserDAO userDAO;
 
     @Resource
     SessionObject sessionObject;
 
     @Override
     public void authenticate(String login, String password) {
-        Optional<User> user = this.database.getUserByLogin(login);
+        Optional<User> user = this.userDAO.getUserByLogin(login);
 
         if(user.isEmpty() ||
                 !user.get().getPass().equals(DigestUtils.md5Hex(password))) {
@@ -35,13 +36,13 @@ public class AuthenticateService implements IAuthenticationService {
 
     @Override
     public void register(RegisterUser registerUser) {
-        Optional<User> userBox = this.database.getUserByLogin(registerUser.getLogin());
+        Optional<User> userBox = this.userDAO.getUserByLogin(registerUser.getLogin());
 
         if(userBox.isPresent()) {
             throw new LoginAlreadyUseException();
         }
 
         registerUser.setPass(DigestUtils.md5Hex(registerUser.getPass()));
-        this.database.addUser(registerUser);
+        this.userDAO.addUser(registerUser);
     }
 }

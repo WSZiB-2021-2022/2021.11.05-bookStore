@@ -65,4 +65,32 @@ public class UserDAOImpl implements IUserDAO {
             throwables.printStackTrace();
         }
     }
+
+    @Override
+    public Optional<User> getUserById(int id) {
+        try {
+            String sql = "SELECT * FROM tuser WHERE id = ?";
+
+            PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if(rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setSurname(rs.getString("surname"));
+                user.setLogin(rs.getString("login"));
+                user.setPass(rs.getString("pass"));
+
+                return Optional.of(user);
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
 }

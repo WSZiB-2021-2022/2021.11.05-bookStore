@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface IBookDAO {
     List<Book> getBooks();
     Optional<Book> getBookById(int bookId);
+    void updateBook(Book book);
 }

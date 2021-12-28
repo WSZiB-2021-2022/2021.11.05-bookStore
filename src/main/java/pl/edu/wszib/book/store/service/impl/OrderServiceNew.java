@@ -3,6 +3,8 @@ package pl.edu.wszib.book.store.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.wszib.book.store.database.DB;
+import pl.edu.wszib.book.store.database.IBookDAO;
+import pl.edu.wszib.book.store.database.IOrderDAO;
 import pl.edu.wszib.book.store.model.Book;
 import pl.edu.wszib.book.store.model.Order;
 import pl.edu.wszib.book.store.model.OrderPosition;
@@ -20,16 +22,20 @@ public class OrderServiceNew implements IOrderService {
     SessionObject sessionObject;
 
     @Autowired
-    DB database;
+    IOrderDAO orderDAO;
+
+    @Autowired
+    IBookDAO bookDAO;
 
     @Override
     public void confirmOrder() {
         Order order = new Order(this.sessionObject.getUser(), this.sessionObject.getCart().getOrderPositions());
-        this.database.addOrder(order);
+        this.orderDAO.addOrder(order);
         for (OrderPosition orderPosition : order.getOrderPositions()) {
-            Optional<Book> bookBox = database.getBookById(orderPosition.getBook().getId());
+            Optional<Book> bookBox = this.bookDAO.getBookById(orderPosition.getBook().getId());
             if(bookBox.isPresent()) {
                 bookBox.get().setQuantity(bookBox.get().getQuantity() - orderPosition.getQuantity());
+                this.bookDAO.updateBook(bookBox.get());
             }
         }
         this.sessionObject.getCart().clearOrderPositions();
@@ -37,6 +43,6 @@ public class OrderServiceNew implements IOrderService {
 
     @Override
     public List<Order> getOrdersForCurrentUser() {
-        return this.database.getOrdersByUserId(this.sessionObject.getUser().getId());
+        return this.orderDAO.getOrdersByUserId(this.sessionObject.getUser().getId());
     }
 }

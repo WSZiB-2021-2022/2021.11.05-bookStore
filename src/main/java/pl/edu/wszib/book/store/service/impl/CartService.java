@@ -3,6 +3,7 @@ package pl.edu.wszib.book.store.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.wszib.book.store.database.DB;
+import pl.edu.wszib.book.store.database.IBookDAO;
 import pl.edu.wszib.book.store.model.Book;
 import pl.edu.wszib.book.store.model.OrderPosition;
 import pl.edu.wszib.book.store.service.ICartService;
@@ -15,20 +16,20 @@ import java.util.Optional;
 public class CartService implements ICartService {
 
     @Autowired
-    DB database;
+    IBookDAO bookDAO;
 
     @Resource
     SessionObject sessionObject;
 
     public void addBookToCart(int bookId) {
-        Optional<Book> bookBox = this.database.getBookById(bookId);
+        Optional<Book> bookBox = this.bookDAO.getBookById(bookId);
 
         if(bookBox.isEmpty()) {
             return;
         }
 
         Book book = bookBox.get();
-        if(!(book.getQuantity() > 0)) {
+        if(book.getQuantity() <= 0) {
             return;
         }
 
@@ -40,7 +41,7 @@ public class CartService implements ICartService {
             }
         }
 
-        OrderPosition orderPosition = new OrderPosition(book, 1);
+        OrderPosition orderPosition = new OrderPosition(0, book, 1);
         this.sessionObject.getCart().getOrderPositions().add(orderPosition);
     }
 }

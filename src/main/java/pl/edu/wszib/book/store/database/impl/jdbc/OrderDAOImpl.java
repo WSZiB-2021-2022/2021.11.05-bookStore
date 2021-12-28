@@ -3,16 +3,28 @@ package pl.edu.wszib.book.store.database.impl.jdbc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import pl.edu.wszib.book.store.database.IOrderDAO;
+import pl.edu.wszib.book.store.database.IOrderPositionDAO;
+import pl.edu.wszib.book.store.database.IUserDAO;
 import pl.edu.wszib.book.store.model.Order;
+import pl.edu.wszib.book.store.model.OrderPosition;
+import pl.edu.wszib.book.store.model.User;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class OrderDAOImpl implements IOrderDAO {
 
     @Autowired
     Connection connection;
+
+    @Autowired
+    IOrderPositionDAO orderPositionDAO;
+
+    @Autowired
+    IUserDAO userDAO;
 
     @Override
     public void addOrder(Order order) {
@@ -33,7 +45,9 @@ public class OrderDAOImpl implements IOrderDAO {
                 order.setId(rs.getInt(1));
             }
 
-            //TODO zapisa wszystkich order pozycji
+            for(OrderPosition orderPosition : order.getOrderPositions()) {
+                this.orderPositionDAO.addOrderPosition(orderPosition, order.getId());
+            }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -42,6 +56,35 @@ public class OrderDAOImpl implements IOrderDAO {
 
     @Override
     public List<Order> getOrdersByUserId(int userId) {
-        return null;
+        List<Order> result = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM torder WHERE user_id = ?";
+
+            PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
+
+            preparedStatement.setInt(1, userId);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next()) {
+                Order order = new Order();
+                order.setId(rs.getInt("id"));
+
+                Optional<User> userBox = this.userDAO.getUserById(userId);
+                order.setUser(userBox.get());
+
+                order.setPrice(rs.getDouble("price"));
+                order.setStatus(Order.Status.valueOf(rs.getString("status")));
+                order.setDate(rs.getTimestamp("date").toLocalDateTime());
+
+                List<OrderPosition> orderPositions = this.orderPositionDAO.getOrderPositionsByOrderId(order.getId());
+                order.setOrderPositions(orderPositions);
+
+                result.add(order);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return result;
     }
 }

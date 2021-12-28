@@ -1,15 +1,18 @@
 package pl.edu.wszib.book.store.model;
 
-import java.time.LocalDate;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
+@Entity(name = "torder")
 public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private User user;
     private double price;
+    @Enumerated(EnumType.STRING)
     private Status status;
     private List<OrderPosition> orderPositions = new ArrayList<>();
     private LocalDateTime date;
@@ -24,7 +27,6 @@ public class Order {
     }
 
     public Order(User user, List<OrderPosition> orderPositions) {
-        this.id = new Random().nextInt(1000000);
         this.user = user;
         this.status = Status.NEW;
         this.orderPositions = orderPositions;
@@ -33,6 +35,7 @@ public class Order {
         for(OrderPosition orderPosition : orderPositions) {
             this.price += orderPosition.getBook().getPrice() * orderPosition.getQuantity();
         }
+        this.price = Math.round(this.price*100)/100.0;
     }
 
     public Order() {
