@@ -43,6 +43,13 @@ public class AuthenticateService implements IAuthenticationService {
         }
 
         registerUser.setPass(DigestUtils.md5Hex(registerUser.getPass()));
-        this.userDAO.addUser(registerUser);
+
+        User user = new User();
+        user.setLogin(registerUser.getLogin());
+        user.setPass(registerUser.getPass());
+        user.setSurname(registerUser.getSurname());
+        user.setName(registerUser.getName());
+
+        this.userDAO.addUser(user);
     }
 }

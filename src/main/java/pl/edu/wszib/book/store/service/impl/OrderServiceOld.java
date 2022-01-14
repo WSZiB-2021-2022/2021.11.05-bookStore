@@ -10,6 +10,8 @@ import pl.edu.wszib.book.store.model.Order;
 import pl.edu.wszib.book.store.model.OrderPosition;
 import pl.edu.wszib.book.store.service.IOrderService;
 import pl.edu.wszib.book.store.session.SessionObject;
+
+import java.util.HashSet;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -28,7 +30,7 @@ public class OrderServiceOld implements IOrderService {
 
     @Override
     public void confirmOrder() {
-        Order order = new Order(this.sessionObject.getUser(), this.sessionObject.getCart().getOrderPositions());
+        Order order = new Order(this.sessionObject.getUser(), new HashSet<>(this.sessionObject.getCart().getOrderPositions()));
         this.orderDAO.addOrder(order);
         for (OrderPosition orderPosition : order.getOrderPositions()) {
             Optional<Book> bookBox = bookDAO.getBookById(orderPosition.getBook().getId());

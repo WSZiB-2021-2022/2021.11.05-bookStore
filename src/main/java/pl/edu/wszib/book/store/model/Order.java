@@ -2,22 +2,24 @@ package pl.edu.wszib.book.store.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name = "torder")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
     private double price;
     @Enumerated(EnumType.STRING)
     private Status status;
-    private List<OrderPosition> orderPositions = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<OrderPosition> orderPositions = new HashSet<>();
     private LocalDateTime date;
 
-    public Order(int id, User user, double price, Status status, List<OrderPosition> orderPositions, LocalDateTime date) {
+    public Order(int id, User user, double price, Status status, Set<OrderPosition> orderPositions, LocalDateTime date) {
         this.id = id;
         this.user = user;
         this.price = price;
@@ -26,7 +28,7 @@ public class Order {
         this.date = date;
     }
 
-    public Order(User user, List<OrderPosition> orderPositions) {
+    public Order(User user, Set<OrderPosition> orderPositions) {
         this.user = user;
         this.status = Status.NEW;
         this.orderPositions = orderPositions;
@@ -73,11 +75,11 @@ public class Order {
         this.status = status;
     }
 
-    public List<OrderPosition> getOrderPositions() {
+    public Set<OrderPosition> getOrderPositions() {
         return orderPositions;
     }
 
-    public void setOrderPositions(List<OrderPosition> orderPositions) {
+    public void setOrderPositions(Set<OrderPosition> orderPositions) {
         this.orderPositions = orderPositions;
     }
 

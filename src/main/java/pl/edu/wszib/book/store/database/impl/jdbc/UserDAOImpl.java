@@ -8,7 +8,6 @@ import pl.edu.wszib.book.store.model.User;
 import java.sql.*;
 import java.util.Optional;
 
-@Repository
 public class UserDAOImpl implements IUserDAO {
 
     @Autowired

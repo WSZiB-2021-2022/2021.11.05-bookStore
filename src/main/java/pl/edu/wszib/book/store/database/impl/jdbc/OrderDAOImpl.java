@@ -11,10 +11,10 @@ import pl.edu.wszib.book.store.model.User;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class OrderDAOImpl implements IOrderDAO {
 
     @Autowired
@@ -78,7 +78,7 @@ public class OrderDAOImpl implements IOrderDAO {
                 order.setDate(rs.getTimestamp("date").toLocalDateTime());
 
                 List<OrderPosition> orderPositions = this.orderPositionDAO.getOrderPositionsByOrderId(order.getId());
-                order.setOrderPositions(orderPositions);
+                order.setOrderPositions(new HashSet<>(orderPositions));
 
                 result.add(order);
             }

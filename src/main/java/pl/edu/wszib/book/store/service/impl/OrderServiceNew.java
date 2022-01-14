@@ -12,6 +12,7 @@ import pl.edu.wszib.book.store.service.IOrderService;
 import pl.edu.wszib.book.store.session.SessionObject;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +30,7 @@ public class OrderServiceNew implements IOrderService {
 
     @Override
     public void confirmOrder() {
-        Order order = new Order(this.sessionObject.getUser(), this.sessionObject.getCart().getOrderPositions());
+        Order order = new Order(this.sessionObject.getUser(), new HashSet<>(this.sessionObject.getCart().getOrderPositions()));
         this.orderDAO.addOrder(order);
         for (OrderPosition orderPosition : order.getOrderPositions()) {
             Optional<Book> bookBox = this.bookDAO.getBookById(orderPosition.getBook().getId());
